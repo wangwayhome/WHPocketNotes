@@ -5,7 +5,7 @@ Thank you for using WHPocketNotes!
 If you have any questions, issues, or feature requests, feel free to contact me.
 
 📩 Email Support  
-**wangweihong@leelen.cn**  
+**wangwayhome@gmail.com**  
 (Or replace with another support email if needed)
 
 ---
