@@ -1,0 +1,20 @@
+platform :ios, '12.0'
+inhibit_all_warnings!
+
+target 'PocketNotes' do
+  use_frameworks!
+
+
+  # 自动布局
+  pod 'Masonry', '~> 1.1.0'
+
+end
+
+# 统一所有 Pods 的最低系统版本，避免不同库设置过高导致警告
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
+    end
+  end
+end
