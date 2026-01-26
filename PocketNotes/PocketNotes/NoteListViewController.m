@@ -3,6 +3,8 @@
 #import "NoteManager.h"
 #import "Note.h"
 
+static const CGFloat kThumbnailSize = 60.0;
+
 @interface NoteListViewController () <UISearchResultsUpdating>
 
 @property (nonatomic, strong) NSArray<Note *> *notes;
@@ -99,7 +101,7 @@
     // Show thumbnail if note has images
     if (note.images.count > 0) {
         UIImage *thumbnail = note.images.firstObject;
-        CGSize thumbnailSize = CGSizeMake(60, 60);
+        CGSize thumbnailSize = CGSizeMake(kThumbnailSize, kThumbnailSize);
         UIGraphicsBeginImageContextWithOptions(thumbnailSize, NO, 0.0);
         [thumbnail drawInRect:CGRectMake(0, 0, thumbnailSize.width, thumbnailSize.height)];
         UIImage *resizedThumbnail = UIGraphicsGetImageFromCurrentImageContext();

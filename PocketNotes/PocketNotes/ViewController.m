@@ -9,6 +9,10 @@
 #import <Masonry/Masonry.h>
 #import "NoteManager.h"
 
+static const CGFloat kImageContainerMargin = 24.0;
+static const CGFloat kMaxImageHeight = 400.0;
+static const NSInteger kFullScreenViewTag = 999;
+
 @interface ViewController () <UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @property (nonatomic, strong) UITextView *textView;
@@ -124,8 +128,7 @@
     
     // Calculate height based on aspect ratio
     CGFloat aspectRatio = image.size.height / image.size.width;
-    CGFloat maxHeight = 400;
-    CGFloat calculatedHeight = MIN(aspectRatio * (self.view.bounds.size.width - 24), maxHeight);
+    CGFloat calculatedHeight = MIN(aspectRatio * (self.view.bounds.size.width - kImageContainerMargin), kMaxImageHeight);
     
     [containerView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.height.equalTo(@(calculatedHeight));
@@ -138,7 +141,7 @@
     // Create full screen view
     UIView *fullScreenView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
     fullScreenView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.9];
-    fullScreenView.tag = 999; // Tag for identification
+    fullScreenView.tag = kFullScreenViewTag;
     
     UIImageView *fullScreenImageView = [[UIImageView alloc] initWithImage:imageView.image];
     fullScreenImageView.contentMode = UIViewContentModeScaleAspectFit;
@@ -150,7 +153,29 @@
     [fullScreenView addGestureRecognizer:tapToDismiss];
     
     // Add to window
-    UIWindow *window = [UIApplication sharedApplication].keyWindow;
+    UIWindow *window = nil;
+    if (@available(iOS 13.0, *)) {
+        NSSet<UIScene *> *connectedScenes = [UIApplication sharedApplication].connectedScenes;
+        for (UIScene *scene in connectedScenes) {
+            if ([scene isKindOfClass:[UIWindowScene class]]) {
+                UIWindowScene *windowScene = (UIWindowScene *)scene;
+                for (UIWindow *w in windowScene.windows) {
+                    if (w.isKeyWindow) {
+                        window = w;
+                        break;
+                    }
+                }
+            }
+            if (window) break;
+        }
+    } else {
+        window = [UIApplication sharedApplication].keyWindow;
+    }
+    
+    if (!window) {
+        window = [UIApplication sharedApplication].windows.firstObject;
+    }
+    
     [window addSubview:fullScreenView];
     
     // Animate in

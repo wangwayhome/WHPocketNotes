@@ -1,5 +1,7 @@
 #import "Note.h"
 
+static const CGFloat kJPEGCompressionQuality = 0.8f;
+
 @implementation Note
 
 - (instancetype)init {
@@ -22,7 +24,7 @@
     if (self.images.count > 0) {
         NSMutableArray *imageDataArray = [NSMutableArray array];
         for (UIImage *image in self.images) {
-            NSData *imageData = UIImageJPEGRepresentation(image, 0.8);
+            NSData *imageData = UIImageJPEGRepresentation(image, kJPEGCompressionQuality);
             if (imageData) {
                 [imageDataArray addObject:imageData];
             }
