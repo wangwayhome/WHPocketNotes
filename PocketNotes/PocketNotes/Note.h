@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -7,6 +8,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *uuid;
 @property (nonatomic, copy) NSString *text;
 @property (nonatomic, strong) NSDate *lastModified;
+@property (nonatomic, strong, nullable) NSMutableArray<UIImage *> *images;
 
 @end
 

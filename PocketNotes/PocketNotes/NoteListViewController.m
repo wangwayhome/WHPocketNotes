@@ -80,12 +80,37 @@
     }
     
     Note *note = [self isSearching] ? self.filteredNotes[indexPath.row] : self.notes[indexPath.row];
-    cell.textLabel.text = note.text.length > 0 ? [note.text componentsSeparatedByString:@"\n"].firstObject : @"New Note";
+    
+    // Show first line of text or "New Note"
+    NSString *displayText = note.text.length > 0 ? [note.text componentsSeparatedByString:@"\n"].firstObject : @"New Note";
+    
+    // Add image indicator if note has images
+    if (note.images.count > 0) {
+        displayText = [NSString stringWithFormat:@"📷 %@", displayText];
+    }
+    
+    cell.textLabel.text = displayText;
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.dateStyle = NSDateFormatterShortStyle;
     formatter.timeStyle = NSDateFormatterShortStyle;
     cell.detailTextLabel.text = [formatter stringFromDate:note.lastModified];
+    
+    // Show thumbnail if note has images
+    if (note.images.count > 0) {
+        UIImage *thumbnail = note.images.firstObject;
+        CGSize thumbnailSize = CGSizeMake(60, 60);
+        UIGraphicsBeginImageContextWithOptions(thumbnailSize, NO, 0.0);
+        [thumbnail drawInRect:CGRectMake(0, 0, thumbnailSize.width, thumbnailSize.height)];
+        UIImage *resizedThumbnail = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        cell.imageView.image = resizedThumbnail;
+        cell.imageView.contentMode = UIViewContentModeScaleAspectFill;
+        cell.imageView.layer.cornerRadius = 8;
+        cell.imageView.layer.masksToBounds = YES;
+    } else {
+        cell.imageView.image = nil;
+    }
     
     return cell;
 }
