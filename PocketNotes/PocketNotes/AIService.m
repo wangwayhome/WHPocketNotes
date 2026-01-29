@@ -14,6 +14,14 @@ static NSTimeInterval const kRequestTimeout = 60.0;
 
 @implementation AIService
 
+static NSString *PNRedactedAPIKey(NSString *apiKey) {
+    if (apiKey.length <= 8) {
+        return @"[REDACTED]";
+    }
+    NSString *suffix = [apiKey substringFromIndex:apiKey.length - 4];
+    return [NSString stringWithFormat:@"[REDACTED ...%@]", suffix];
+}
+
 + (instancetype)sharedService {
     static AIService *service = nil;
     static dispatch_once_t onceToken;
@@ -88,6 +96,11 @@ static NSTimeInterval const kRequestTimeout = 60.0;
     
     request.HTTPBody = requestData;
     
+    NSString *requestBodyString = [[NSString alloc] initWithData:requestData encoding:NSUTF8StringEncoding];
+    NSLog(@"[AIService] Request URL: %@", kOpenAIAPIURL);
+    NSLog(@"[AIService] Request Headers: Content-Type=application/json, Authorization=Bearer %@", PNRedactedAPIKey(apiKey));
+    NSLog(@"[AIService] Request Body: %@", requestBodyString ?: @"<nil>");
+    
     NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:request 
                                                                  completionHandler:^(NSData * _Nullable data, 
                                                                                    NSURLResponse * _Nullable response, 
@@ -100,6 +113,9 @@ static NSTimeInterval const kRequestTimeout = 60.0;
         }
         
         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+        NSString *responseBodyString = data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : nil;
+        NSLog(@"[AIService] Response Status: %ld", (long)httpResponse.statusCode);
+        NSLog(@"[AIService] Response Body: %@", responseBodyString ?: @"<nil>");
         if (httpResponse.statusCode != 200) {
             NSString *errorMessage = [NSString stringWithFormat:@"API request failed with status code: %ld", (long)httpResponse.statusCode];
             

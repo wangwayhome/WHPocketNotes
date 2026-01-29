@@ -39,7 +39,10 @@ static const NSInteger kFullScreenViewTag = 999;
     
     [self.scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
         if (@available(iOS 11.0, *)) {
-            make.edges.equalTo(self.view.mas_safeAreaLayoutGuide);
+            make.top.equalTo(self.view.mas_safeAreaLayoutGuideTop);
+            make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
+            make.left.equalTo(self.view.mas_safeAreaLayoutGuideLeft);
+            make.right.equalTo(self.view.mas_safeAreaLayoutGuideRight);
         } else {
             make.top.equalTo(self.mas_topLayoutGuideBottom);
             make.bottom.equalTo(self.mas_bottomLayoutGuideTop);

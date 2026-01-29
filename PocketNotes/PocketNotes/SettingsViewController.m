@@ -42,7 +42,10 @@ static NSString * const kOpenAIAPIKeyKeychainAccount = @"apikey";
     
     [self.scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
         if (@available(iOS 11.0, *)) {
-            make.edges.equalTo(self.view.mas_safeAreaLayoutGuide);
+            make.top.equalTo(self.view.mas_safeAreaLayoutGuideTop);
+            make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
+            make.left.equalTo(self.view.mas_safeAreaLayoutGuideLeft);
+            make.right.equalTo(self.view.mas_safeAreaLayoutGuideRight);
         } else {
             make.top.equalTo(self.mas_topLayoutGuideBottom);
             make.bottom.equalTo(self.mas_bottomLayoutGuideTop);
@@ -223,7 +226,7 @@ static NSString * const kOpenAIAPIKeyKeychainAccount = @"apikey";
     }
     
     if ([SettingsViewController saveAPIKey:apiKey]) {
-        [self showAlertWithTitle:@"Success" message:@"API key saved successfully"];
+        [self showAlertWithTitle:@"Success" message:@"API key saved successfully" popOnDismiss:YES];
     } else {
         [self showAlertWithTitle:@"Error" message:@"Failed to save API key"];
     }
@@ -256,13 +259,21 @@ static NSString * const kOpenAIAPIKeyKeychainAccount = @"apikey";
 }
 
 - (void)showAlertWithTitle:(NSString *)title message:(NSString *)message {
+    [self showAlertWithTitle:title message:message popOnDismiss:NO];
+}
+
+- (void)showAlertWithTitle:(NSString *)title message:(NSString *)message popOnDismiss:(BOOL)popOnDismiss {
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title
                                                                    message:message
                                                             preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK"
                                                        style:UIAlertActionStyleDefault
-                                                     handler:nil];
+                                                     handler:^(UIAlertAction * _Nonnull action) {
+        if (popOnDismiss) {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+    }];
     
     [alert addAction:okAction];
     [self presentViewController:alert animated:YES completion:nil];
