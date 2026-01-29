@@ -18,6 +18,10 @@ WHPocketNotes is a simple and efficient note-taking application designed for iOS
 - **🔍 Smart Search** - Find your notes quickly with keyword search functionality
 - **📋 Organized List View** - View all your notes in a clean, easy-to-navigate list
 - **🗑️ Easy Management** - Delete notes with a simple swipe or tap
+- **🤖 AI-Powered Features** - Enhance, summarize, and translate your notes with OpenAI integration
+  - ✨ **Text Enhancement** - Improve clarity and structure of your notes
+  - 📝 **Summarization** - Get concise summaries of longer notes
+  - 🌍 **Translation** - Translate notes to multiple languages
 - **🔒 Privacy First** - No account required, no cloud sync, no data collection
 - **📴 Offline First** - All notes are stored locally on your device for complete offline access
 - **⚡ Fast & Lightweight** - Minimal resource usage for optimal performance
@@ -60,9 +64,10 @@ Your privacy is our top priority:
 
 - ✅ **No user accounts** - Start using the app immediately without registration
 - ✅ **Local storage only** - All data stays on your device
-- ✅ **No internet required** - Works completely offline
+- ✅ **No internet required** - Works completely offline (AI features are optional and require internet)
 - ✅ **No data collection** - We don't collect, store, or share any personal information
 - ✅ **No third-party services** - No analytics, no ads, no tracking
+- ✅ **Secure API key storage** - Your OpenAI API key is stored securely in the iOS Keychain
 
 For more details, see our [Privacy Policy](PrivacyPolicy.md).
 
@@ -80,6 +85,11 @@ For more details, see our [Privacy Policy](PrivacyPolicy.md).
 2. **Edit a Note**: Tap on any note to view and edit its content
 3. **Search Notes**: Use the search bar to find specific notes by keywords
 4. **Delete a Note**: Swipe left on a note or tap the delete button
+5. **Configure AI**: Tap the settings icon to enter your OpenAI API key
+6. **Use AI Features**: Tap the sparkles icon (✨) in the note editor to:
+   - Enhance your text for better clarity and structure
+   - Generate summaries of your notes
+   - Translate notes to different languages
 
 ## 🤝 Contributing
 

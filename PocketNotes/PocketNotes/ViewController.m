@@ -8,6 +8,8 @@
 #import "ViewController.h"
 #import <Masonry/Masonry.h>
 #import "NoteManager.h"
+#import "AIService.h"
+#import "SettingsViewController.h"
 
 static const CGFloat kImageContainerMargin = 24.0;
 static const CGFloat kMaxImageHeight = 400.0;
@@ -18,6 +20,7 @@ static const NSInteger kFullScreenViewTag = 999;
 @property (nonatomic, strong) UITextView *textView;
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIStackView *contentStackView;
+@property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
 
 @end
 
@@ -87,15 +90,21 @@ static const NSInteger kFullScreenViewTag = 999;
         }
     }
     
-    // Add image button and save button
+    // Add image button, AI button and save button
     UIBarButtonItem *addImageItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera
                                                                                    target:self
                                                                                    action:@selector(addImageButtonTapped)];
+    
+    UIBarButtonItem *aiItem = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"sparkles"]
+                                                               style:UIBarButtonItemStylePlain
+                                                              target:self
+                                                              action:@selector(aiButtonTapped)];
+    
     UIBarButtonItem *saveItem = [[UIBarButtonItem alloc] initWithTitle:@"SAVE"
                                                                   style:UIBarButtonItemStyleDone
                                                                  target:self
                                                                  action:@selector(saveButtonTapped)];
-    self.navigationItem.rightBarButtonItems = @[saveItem, addImageItem];
+    self.navigationItem.rightBarButtonItems = @[saveItem, aiItem, addImageItem];
 }
 
 - (void)addImageViewToStack:(UIImage *)image {
@@ -315,6 +324,221 @@ static const NSInteger kFullScreenViewTag = 999;
     
     [[NoteManager sharedManager] saveNote:self.note];
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+#pragma mark - AI Features
+
+- (void)aiButtonTapped {
+    if (![[AIService sharedService] isConfigured]) {
+        [self showAINotConfiguredAlert];
+        return;
+    }
+    
+    if (self.textView.text.length == 0 || [self.textView.textColor isEqual:[UIColor secondaryLabelColor]]) {
+        [self showAlertWithTitle:@"No Text" message:@"Please enter some text first to use AI features."];
+        return;
+    }
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"AI Features"
+                                                                   message:@"Choose an AI action"
+                                                            preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *enhanceAction = [UIAlertAction actionWithTitle:@"✨ Enhance Text"
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * _Nonnull action) {
+        [self enhanceText];
+    }];
+    
+    UIAlertAction *summarizeAction = [UIAlertAction actionWithTitle:@"📝 Summarize"
+                                                              style:UIAlertActionStyleDefault
+                                                            handler:^(UIAlertAction * _Nonnull action) {
+        [self summarizeText];
+    }];
+    
+    UIAlertAction *translateAction = [UIAlertAction actionWithTitle:@"🌍 Translate"
+                                                              style:UIAlertActionStyleDefault
+                                                            handler:^(UIAlertAction * _Nonnull action) {
+        [self showTranslateOptions];
+    }];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:nil];
+    
+    [alert addAction:enhanceAction];
+    [alert addAction:summarizeAction];
+    [alert addAction:translateAction];
+    [alert addAction:cancelAction];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)showAINotConfiguredAlert {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"AI Not Configured"
+                                                                   message:@"Please configure your OpenAI API key in Settings to use AI features."
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *settingsAction = [UIAlertAction actionWithTitle:@"Go to Settings"
+                                                             style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction * _Nonnull action) {
+        SettingsViewController *settingsVC = [[SettingsViewController alloc] init];
+        [self.navigationController pushViewController:settingsVC animated:YES];
+    }];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:nil];
+    
+    [alert addAction:settingsAction];
+    [alert addAction:cancelAction];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)enhanceText {
+    [self showLoadingIndicator];
+    
+    [[AIService sharedService] enhanceText:self.textView.text completion:^(NSString * _Nullable result, NSError * _Nullable error) {
+        [self hideLoadingIndicator];
+        
+        if (error) {
+            [self showAlertWithTitle:@"Error" message:error.localizedDescription];
+            return;
+        }
+        
+        if (result) {
+            [self showResultAlert:result withTitle:@"Enhanced Text"];
+        }
+    }];
+}
+
+- (void)summarizeText {
+    [self showLoadingIndicator];
+    
+    [[AIService sharedService] summarizeText:self.textView.text completion:^(NSString * _Nullable result, NSError * _Nullable error) {
+        [self hideLoadingIndicator];
+        
+        if (error) {
+            [self showAlertWithTitle:@"Error" message:error.localizedDescription];
+            return;
+        }
+        
+        if (result) {
+            [self showResultAlert:result withTitle:@"Summary"];
+        }
+    }];
+}
+
+- (void)showTranslateOptions {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Translate To"
+                                                                   message:@"Select target language"
+                                                            preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    NSArray *languages = @[@"Chinese", @"English", @"Spanish", @"French", @"German", @"Japanese", @"Korean"];
+    
+    for (NSString *language in languages) {
+        UIAlertAction *action = [UIAlertAction actionWithTitle:language
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction * _Nonnull action) {
+            [self translateTextToLanguage:language];
+        }];
+        [alert addAction:action];
+    }
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:nil];
+    [alert addAction:cancelAction];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)translateTextToLanguage:(NSString *)language {
+    [self showLoadingIndicator];
+    
+    [[AIService sharedService] translateText:self.textView.text toLanguage:language completion:^(NSString * _Nullable result, NSError * _Nullable error) {
+        [self hideLoadingIndicator];
+        
+        if (error) {
+            [self showAlertWithTitle:@"Error" message:error.localizedDescription];
+            return;
+        }
+        
+        if (result) {
+            [self showResultAlert:result withTitle:[NSString stringWithFormat:@"Translated to %@", language]];
+        }
+    }];
+}
+
+- (void)showResultAlert:(NSString *)result withTitle:(NSString *)title {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title
+                                                                   message:result
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *replaceAction = [UIAlertAction actionWithTitle:@"Replace"
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * _Nonnull action) {
+        self.textView.text = result;
+        self.textView.textColor = [UIColor labelColor];
+    }];
+    
+    UIAlertAction *appendAction = [UIAlertAction actionWithTitle:@"Append"
+                                                           style:UIAlertActionStyleDefault
+                                                         handler:^(UIAlertAction * _Nonnull action) {
+        NSString *currentText = self.textView.text;
+        if ([self.textView.textColor isEqual:[UIColor secondaryLabelColor]]) {
+            currentText = @"";
+        }
+        self.textView.text = [NSString stringWithFormat:@"%@\n\n%@", currentText, result];
+        self.textView.textColor = [UIColor labelColor];
+    }];
+    
+    UIAlertAction *copyAction = [UIAlertAction actionWithTitle:@"Copy"
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction * _Nonnull action) {
+        UIPasteboard.generalPasteboard.string = result;
+        [self showAlertWithTitle:@"Copied" message:@"AI result copied to clipboard"];
+    }];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:nil];
+    
+    [alert addAction:replaceAction];
+    [alert addAction:appendAction];
+    [alert addAction:copyAction];
+    [alert addAction:cancelAction];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)showLoadingIndicator {
+    if (!self.activityIndicator) {
+        self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleLarge];
+        self.activityIndicator.center = self.view.center;
+        [self.view addSubview:self.activityIndicator];
+    }
+    
+    [self.activityIndicator startAnimating];
+    self.view.userInteractionEnabled = NO;
+}
+
+- (void)hideLoadingIndicator {
+    [self.activityIndicator stopAnimating];
+    self.view.userInteractionEnabled = YES;
+}
+
+- (void)showAlertWithTitle:(NSString *)title message:(NSString *)message {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title
+                                                                   message:message
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK"
+                                                       style:UIAlertActionStyleDefault
+                                                     handler:nil];
+    
+    [alert addAction:okAction];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 @end
