@@ -39,13 +39,12 @@ static const NSInteger kFullScreenViewTag = 999;
     
     [self.scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
         if (@available(iOS 11.0, *)) {
-            make.top.equalTo(self.view.mas_safeAreaLayoutGuideTop);
-            make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
+            make.edges.equalTo(self.view.mas_safeAreaLayoutGuide);
         } else {
             make.top.equalTo(self.mas_topLayoutGuideBottom);
             make.bottom.equalTo(self.mas_bottomLayoutGuideTop);
+            make.left.right.equalTo(self.view);
         }
-        make.left.right.equalTo(self.view);
     }];
     
     // Create stack view for content
