@@ -2,6 +2,7 @@
 #import "ViewController.h"
 #import "NoteManager.h"
 #import "Note.h"
+#import "SettingsViewController.h"
 
 static const CGFloat kThumbnailSize = 60.0;
 
@@ -21,7 +22,13 @@ static const CGFloat kThumbnailSize = 60.0;
     self.title = @"Pocket Notes";
     
     UIBarButtonItem *addItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addNewNote)];
-    self.navigationItem.rightBarButtonItem = addItem;
+    
+    UIBarButtonItem *settingsItem = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"gearshape.fill"]
+                                                                     style:UIBarButtonItemStylePlain
+                                                                    target:self
+                                                                    action:@selector(showSettings)];
+    
+    self.navigationItem.rightBarButtonItems = @[addItem, settingsItem];
     
     self.filteredNotes = [NSMutableArray array];
     self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
@@ -45,6 +52,11 @@ static const CGFloat kThumbnailSize = 60.0;
     ViewController *vc = [[ViewController alloc] init];
     vc.note = [[Note alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)showSettings {
+    SettingsViewController *settingsVC = [[SettingsViewController alloc] init];
+    [self.navigationController pushViewController:settingsVC animated:YES];
 }
 
 - (BOOL)isSearching {
