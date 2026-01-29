@@ -94,11 +94,13 @@ static const NSInteger kFullScreenViewTag = 999;
     UIBarButtonItem *addImageItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera
                                                                                    target:self
                                                                                    action:@selector(addImageButtonTapped)];
+    addImageItem.accessibilityLabel = @"Add Image";
     
     UIBarButtonItem *aiItem = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"sparkles"]
                                                                style:UIBarButtonItemStylePlain
                                                               target:self
                                                               action:@selector(aiButtonTapped)];
+    aiItem.accessibilityLabel = @"AI Features";
     
     UIBarButtonItem *saveItem = [[UIBarButtonItem alloc] initWithTitle:@"SAVE"
                                                                   style:UIBarButtonItemStyleDone
@@ -398,16 +400,20 @@ static const NSInteger kFullScreenViewTag = 999;
 - (void)enhanceText {
     [self showLoadingIndicator];
     
+    __weak typeof(self) weakSelf = self;
     [[AIService sharedService] enhanceText:self.textView.text completion:^(NSString * _Nullable result, NSError * _Nullable error) {
-        [self hideLoadingIndicator];
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if (!strongSelf) return;
+        
+        [strongSelf hideLoadingIndicator];
         
         if (error) {
-            [self showAlertWithTitle:@"Error" message:error.localizedDescription];
+            [strongSelf showAlertWithTitle:@"Error" message:error.localizedDescription];
             return;
         }
         
         if (result) {
-            [self showResultAlert:result withTitle:@"Enhanced Text"];
+            [strongSelf showResultAlert:result withTitle:@"Enhanced Text"];
         }
     }];
 }
@@ -415,16 +421,20 @@ static const NSInteger kFullScreenViewTag = 999;
 - (void)summarizeText {
     [self showLoadingIndicator];
     
+    __weak typeof(self) weakSelf = self;
     [[AIService sharedService] summarizeText:self.textView.text completion:^(NSString * _Nullable result, NSError * _Nullable error) {
-        [self hideLoadingIndicator];
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if (!strongSelf) return;
+        
+        [strongSelf hideLoadingIndicator];
         
         if (error) {
-            [self showAlertWithTitle:@"Error" message:error.localizedDescription];
+            [strongSelf showAlertWithTitle:@"Error" message:error.localizedDescription];
             return;
         }
         
         if (result) {
-            [self showResultAlert:result withTitle:@"Summary"];
+            [strongSelf showResultAlert:result withTitle:@"Summary"];
         }
     }];
 }
@@ -456,16 +466,20 @@ static const NSInteger kFullScreenViewTag = 999;
 - (void)translateTextToLanguage:(NSString *)language {
     [self showLoadingIndicator];
     
+    __weak typeof(self) weakSelf = self;
     [[AIService sharedService] translateText:self.textView.text toLanguage:language completion:^(NSString * _Nullable result, NSError * _Nullable error) {
-        [self hideLoadingIndicator];
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if (!strongSelf) return;
+        
+        [strongSelf hideLoadingIndicator];
         
         if (error) {
-            [self showAlertWithTitle:@"Error" message:error.localizedDescription];
+            [strongSelf showAlertWithTitle:@"Error" message:error.localizedDescription];
             return;
         }
         
         if (result) {
-            [self showResultAlert:result withTitle:[NSString stringWithFormat:@"Translated to %@", language]];
+            [strongSelf showResultAlert:result withTitle:[NSString stringWithFormat:@"Translated to %@", language]];
         }
     }];
 }

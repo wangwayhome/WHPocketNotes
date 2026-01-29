@@ -10,6 +10,7 @@
 
 static NSString * const kOpenAIAPIURL = @"https://api.openai.com/v1/chat/completions";
 static NSString * const kDefaultModel = @"gpt-3.5-turbo";
+static NSTimeInterval const kRequestTimeout = 60.0;
 
 @implementation AIService
 
@@ -57,6 +58,7 @@ static NSString * const kDefaultModel = @"gpt-3.5-turbo";
     NSURL *url = [NSURL URLWithString:kOpenAIAPIURL];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     request.HTTPMethod = @"POST";
+    request.timeoutInterval = kRequestTimeout;
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request setValue:[NSString stringWithFormat:@"Bearer %@", apiKey] forHTTPHeaderField:@"Authorization"];
     
@@ -105,8 +107,11 @@ static NSString * const kDefaultModel = @"gpt-3.5-turbo";
             if (data) {
                 NSError *parseError;
                 NSDictionary *errorDict = [NSJSONSerialization JSONObjectWithData:data options:0 error:&parseError];
-                if (!parseError && errorDict[@"error"][@"message"]) {
-                    errorMessage = errorDict[@"error"][@"message"];
+                if (!parseError && [errorDict isKindOfClass:[NSDictionary class]]) {
+                    NSDictionary *errorInfo = errorDict[@"error"];
+                    if ([errorInfo isKindOfClass:[NSDictionary class]] && errorInfo[@"message"]) {
+                        errorMessage = errorInfo[@"message"];
+                    }
                 }
             }
             

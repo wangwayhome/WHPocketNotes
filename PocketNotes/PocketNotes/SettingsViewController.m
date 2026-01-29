@@ -95,6 +95,8 @@ static NSString * const kOpenAIAPIKeyKeychainAccount = @"apikey";
     self.apiKeyTextField.autocorrectionType = UITextAutocorrectionTypeNo;
     self.apiKeyTextField.delegate = self;
     self.apiKeyTextField.secureTextEntry = YES;
+    self.apiKeyTextField.accessibilityLabel = @"OpenAI API Key";
+    self.apiKeyTextField.accessibilityHint = @"Enter your OpenAI API key that starts with sk-";
     [self.contentView addSubview:self.apiKeyTextField];
     
     [self.apiKeyTextField mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -209,7 +211,7 @@ static NSString * const kOpenAIAPIKeyKeychainAccount = @"apikey";
 }
 
 - (void)saveButtonTapped {
-    NSString *apiKey = self.apiKeyTextField.text;
+    NSString *apiKey = [self.apiKeyTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     if (!apiKey || apiKey.length == 0) {
         [self showAlertWithTitle:@"Error" message:@"Please enter an API key"];

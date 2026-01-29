@@ -11,6 +11,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SettingsViewController : UIViewController
 
+// Public API for keychain operations
++ (BOOL)saveAPIKey:(NSString *)apiKey;
++ (NSString * _Nullable)getAPIKey;
++ (BOOL)deleteAPIKey;
++ (BOOL)hasAPIKey;
+
 @end
 
 NS_ASSUME_NONNULL_END
