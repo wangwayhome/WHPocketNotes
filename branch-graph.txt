@@ -1,0 +1,27 @@
+* 0478243 (HEAD -> copilot/compare-branch-code, origin/copilot/compare-branch-code) Initial plan (3 minutes ago)
+| * d05b52d (copilot/add-ai-input-functionality) 【fix】修复bug (4 days ago)
+| * d698b3c Fix Masonry constraint crash by using correct safe area API (4 days ago)
+| * ddcee76 Fix code review issues: memory leaks, error handling, and accessibility (4 days ago)
+| * 8dade63 Add AI integration with OpenAI API - Settings, AIService, and UI updates (4 days ago)
+| * bdee9eb Initial plan (4 days ago)
+|/  
+* e5330ec (main, develop) Create comprehensive English and Chinese README files (4 days ago)
+* 7273b9c Initial plan (4 days ago)
+* f87debf (copilot/add-image-upload-feature) 【feat】提交忽略文件 (6 days ago)
+* c92b85f Update UserInterfaceState.xcuserstate (7 days ago)
+* 43bf2fb 【feat】版本号添加 (7 days ago)
+* e888285 [fix]修改证书 (7 days ago)
+* ada1bf0 Complete image storage and display feature implementation (7 days ago)
+* 5c2287f Address code review feedback: fix deprecated API and define constants (7 days ago)
+* 8c266ca Add image storage and display functionality to notes (7 days ago)
+* a065079 Initial plan (7 days ago)
+| * 802debb (copilot/analyze-project-structure) Add comprehensive project analysis document (7 days ago)
+| * 0c1638d Initial plan (7 days ago)
+|/  
+* 423f211 【feat】上传工程代码 (7 days ago)
+*   a917a8c Merge branch 'main' of https://github.com/wangwayhome/WHPocketNotes (8 weeks ago)
+|\  
+| * 9c3cea8 Update README.md (8 weeks ago)
+* | 250d6a1 Create PrivacyPolicy.md (8 weeks ago)
+|/  
+* 12bb392 Create README.md (8 weeks ago)
