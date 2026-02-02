@@ -8,12 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		85BFC156A41465E5C3A451F5 /* Pods_PocketNotes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 315CA103B5CB8DB6DAD98683 /* Pods_PocketNotes.framework */; };
+		A1B2C3D4E5F60718293A4B5F /* NoteManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A4B5C /* NoteManagerTests.m */; };
+		A1B2C3D4E5F60718293A4B60 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A4B5E /* XCTest.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		315CA103B5CB8DB6DAD98683 /* Pods_PocketNotes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PocketNotes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		429C489794BE5A0020FBCCDF /* Pods-PocketNotes.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PocketNotes.release.xcconfig"; path = "Target Support Files/Pods-PocketNotes/Pods-PocketNotes.release.xcconfig"; sourceTree = "<group>"; };
 		476F7D742EE281CA00092DC9 /* PocketNotes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PocketNotes.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A1B2C3D4E5F60718293A4B5C /* NoteManagerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NoteManagerTests.m; sourceTree = "<group>"; };
+		A1B2C3D4E5F60718293A4B5D /* PocketNotesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PocketNotesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A1B2C3D4E5F60718293A4B5E /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = System/Library/Frameworks/XCTest.framework; sourceTree = SDKROOT; };
 		E5D83EF0C30AD77A58BD058B /* Pods-PocketNotes.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PocketNotes.debug.xcconfig"; path = "Target Support Files/Pods-PocketNotes/Pods-PocketNotes.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -47,6 +52,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A1B2C3D4E5F60718293A4B64 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1B2C3D4E5F60718293A4B60 /* XCTest.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -54,6 +67,7 @@
 			isa = PBXGroup;
 			children = (
 				476F7D762EE281CA00092DC9 /* PocketNotes */,
+				A1B2C3D4E5F60718293A4B61 /* PocketNotesTests */,
 				476F7D752EE281CA00092DC9 /* Products */,
 				C085D291BCA81952794C04B4 /* Pods */,
 				7BCAC85DFDB2E32715D3BF1D /* Frameworks */,
@@ -64,6 +78,7 @@
 			isa = PBXGroup;
 			children = (
 				476F7D742EE281CA00092DC9 /* PocketNotes.app */,
+				A1B2C3D4E5F60718293A4B5D /* PocketNotesTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -72,8 +87,17 @@
 			isa = PBXGroup;
 			children = (
 				315CA103B5CB8DB6DAD98683 /* Pods_PocketNotes.framework */,
+				A1B2C3D4E5F60718293A4B5E /* XCTest.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A1B2C3D4E5F60718293A4B61 /* PocketNotesTests */ = {
+			isa = PBXGroup;
+			children = (
+				A1B2C3D4E5F60718293A4B5C /* NoteManagerTests.m */,
+			);
+			path = PocketNotesTests;
 			sourceTree = "<group>";
 		};
 		C085D291BCA81952794C04B4 /* Pods */ = {
@@ -110,6 +134,23 @@
 			productReference = 476F7D742EE281CA00092DC9 /* PocketNotes.app */;
 			productType = "com.apple.product-type.application";
 		};
+		A1B2C3D4E5F60718293A4B62 /* PocketNotesTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A1B2C3D4E5F60718293A4B66 /* Build configuration list for PBXNativeTarget "PocketNotesTests" */;
+			buildPhases = (
+				A1B2C3D4E5F60718293A4B63 /* Sources */,
+				A1B2C3D4E5F60718293A4B64 /* Frameworks */,
+				A1B2C3D4E5F60718293A4B65 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PocketNotesTests;
+			productName = PocketNotesTests;
+			productReference = A1B2C3D4E5F60718293A4B5D /* PocketNotesTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -120,6 +161,9 @@
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
 					476F7D732EE281CA00092DC9 = {
+						CreatedOnToolsVersion = 26.0.1;
+					};
+					A1B2C3D4E5F60718293A4B62 = {
 						CreatedOnToolsVersion = 26.0.1;
 					};
 				};
@@ -139,12 +183,20 @@
 			projectRoot = "";
 			targets = (
 				476F7D732EE281CA00092DC9 /* PocketNotes */,
+				A1B2C3D4E5F60718293A4B62 /* PocketNotesTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		476F7D722EE281CA00092DC9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A1B2C3D4E5F60718293A4B65 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -204,6 +256,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A1B2C3D4E5F60718293A4B63 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1B2C3D4E5F60718293A4B5F /* NoteManagerTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -398,6 +458,54 @@
 			};
 			name = Release;
 		};
+		A1B2C3D4E5F60718293A4B67 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 454ZA94R8Q;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.wwqco.notes.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PocketNotes.app/PocketNotes";
+				TEST_TARGET_NAME = PocketNotes;
+			};
+			name = Debug;
+		};
+		A1B2C3D4E5F60718293A4B68 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 454ZA94R8Q;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.wwqco.notes.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PocketNotes.app/PocketNotes";
+				TEST_TARGET_NAME = PocketNotes;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -415,6 +523,15 @@
 			buildConfigurations = (
 				476F7D8D2EE281CB00092DC9 /* Debug */,
 				476F7D8E2EE281CB00092DC9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A1B2C3D4E5F60718293A4B66 /* Build configuration list for PBXNativeTarget "PocketNotesTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A1B2C3D4E5F60718293A4B67 /* Debug */,
+				A1B2C3D4E5F60718293A4B68 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
